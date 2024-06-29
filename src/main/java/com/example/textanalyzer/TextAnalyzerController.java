@@ -1,0 +1,19 @@
+package com.example.textanalyzer;
+
+import com.example.model.AnalyzeTextRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api")
+public class TextAnalyzerController {
+
+    @PostMapping("/analyze")
+    public Map<String, Integer> analyzeText(@RequestBody AnalyzeTextRequest request) {
+        return TextAnalyzer.analyze(request);
+    }
+}
