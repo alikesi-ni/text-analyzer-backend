@@ -17,31 +17,37 @@ public class TextAnalyzer {
     private static final String UPPER_CASE_VOWELS = "AEIOU";
     private static final String UPPER_CASE_CONSONANTS = "BCDFGHJKLMNPQRSTVWXYZ";
 
+    private static final String ATTRIBUTABLE_CHARACTERS = UPPER_CASE_CONSONANTS + UPPER_CASE_CONSONANTS.toLowerCase()
+            + UPPER_CASE_VOWELS + UPPER_CASE_VOWELS.toLowerCase();
+
     public static AnalyzeText200Response analyze(AnalyzeTextRequest request) {
         LOGGER.log(Level.INFO, request);
-        String upperCaseInput = Optional.ofNullable(request.getInput())
-                .map(TextAnalyzer::customToUpperCase)
-                .orElse("");
         Map<String, Integer> letterCount = new HashMap<>();
-        List<String> nonAttributableCharacters = new ArrayList<>();
-        String lettersToCheckAgainst = "";
+        Set<String> nonAttributableCharacters = new HashSet<>();
 
-        if (request.getLetterType() == AnalyzeTextRequest.LetterTypeEnum.CONSONANTS) {
-            lettersToCheckAgainst = UPPER_CASE_CONSONANTS;
-        }
-        else if (request.getLetterType() == AnalyzeTextRequest.LetterTypeEnum.VOWELS) {
-            lettersToCheckAgainst = UPPER_CASE_VOWELS;
-        }
+        String lettersToCheckAgainst = request.getLetterType() == AnalyzeTextRequest.LetterTypeEnum.CONSONANTS
+                ? UPPER_CASE_CONSONANTS : UPPER_CASE_VOWELS;
 
-        for (int i = 0; i < upperCaseInput.length(); i++) {
-            char c = upperCaseInput.charAt(i);
-            if (lettersToCheckAgainst.indexOf(c) != -1) {
-                    letterCount.put(String.valueOf(c), letterCount.getOrDefault(String.valueOf(c), 0) + 1);
+        String input = request.getInput();
+
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (ATTRIBUTABLE_CHARACTERS.indexOf(c) != -1) {
+                int index = lettersToCheckAgainst.toLowerCase().indexOf(c);
+                if (index != -1) {
+                    char upperCaseCharacter = lettersToCheckAgainst.charAt(index);
+                    letterCount.put(String.valueOf(upperCaseCharacter),
+                            letterCount.getOrDefault(String.valueOf(upperCaseCharacter), 0) + 1);
+                }
+            }
+            else {
+                nonAttributableCharacters.add(String.valueOf(c));
             }
         }
+
         AnalyzeText200Response response = new AnalyzeText200Response();
         response.setCharacterCount(letterCount);
-        response.setNonAttributableCharacters(nonAttributableCharacters);
+        response.setNonAttributableCharacters(nonAttributableCharacters.stream().toList());
         LOGGER.log(Level.INFO, response);
         return response;
     }
