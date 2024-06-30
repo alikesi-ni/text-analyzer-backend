@@ -5,19 +5,21 @@ import com.example.model.AnalyzeTextRequest;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 
 import java.util.*;
 
-
-public class TextAnalyzer {
+@Service
+public class TextAnalyzerService {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String UPPER_CASE_VOWELS = "AEIOU";
     private static final String UPPER_CASE_CONSONANTS = "BCDFGHJKLMNPQRSTVWXYZ";
 
-    private static final String ATTRIBUTABLE_CHARACTERS = UPPER_CASE_CONSONANTS + UPPER_CASE_CONSONANTS.toLowerCase()
+    private static final String ATTRIBUTABLE_CHARACTERS =
+            UPPER_CASE_CONSONANTS + UPPER_CASE_CONSONANTS.toLowerCase()
             + UPPER_CASE_VOWELS + UPPER_CASE_VOWELS.toLowerCase();
 
     public static AnalyzeText200Response analyze(AnalyzeTextRequest request) {
@@ -32,8 +34,9 @@ public class TextAnalyzer {
 
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
+            char lowerCaseCharacter = Character.toLowerCase(c);
             if (ATTRIBUTABLE_CHARACTERS.indexOf(c) != -1) {
-                int index = lettersToCheckAgainst.toLowerCase().indexOf(c);
+                int index = lettersToCheckAgainst.toLowerCase().indexOf(lowerCaseCharacter);
                 if (index != -1) {
                     char upperCaseCharacter = lettersToCheckAgainst.charAt(index);
                     letterCount.put(String.valueOf(upperCaseCharacter),
