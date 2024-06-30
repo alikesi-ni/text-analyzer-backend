@@ -32,13 +32,24 @@ paths:
           content:
             application/json:
               schema:
-                type: string
-                minLength: 1
-                maxLength: 1
-                additionalProperties:
-                  type: integer
-                example:
-                  t: 3
-                  s: 1
-                  n: 1
-                  p: 1
+                type: object
+                properties:
+                  characterCount:
+                    type: string
+                    minLength: 1
+                    maxLength: 1
+                    additionalProperties:
+                      type: integer
+                    example:
+                      t: 3
+                      s: 1
+                      n: 1
+                      p: 1
+                  nonAttributableCharacters:
+                    type: array
+                    items:
+                      type: string
+                      minLength: 1
+                      maxLength: 1
+                    description: List of non-attributable characters
+                    example: [ "!", "@", "#" ]

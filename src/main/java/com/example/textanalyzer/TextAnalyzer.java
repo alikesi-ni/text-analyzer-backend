@@ -1,21 +1,29 @@
 package com.example.textanalyzer;
 
+import com.example.model.AnalyzeText200Response;
 import com.example.model.AnalyzeTextRequest;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
+
 
 public class TextAnalyzer {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String UPPER_CASE_VOWELS = "AEIOU";
     private static final String UPPER_CASE_CONSONANTS = "BCDFGHJKLMNPQRSTVWXYZ";
 
-    public static Map<String, Integer> analyze(AnalyzeTextRequest request) {
+    public static AnalyzeText200Response analyze(AnalyzeTextRequest request) {
+        LOGGER.log(Level.INFO, request);
         String upperCaseInput = Optional.ofNullable(request.getInput())
                 .map(TextAnalyzer::customToUpperCase)
                 .orElse("");
         Map<String, Integer> letterCount = new HashMap<>();
+        List<String> nonAttributableCharacters = new ArrayList<>();
         String lettersToCheckAgainst = "";
 
         if (request.getLetterType() == AnalyzeTextRequest.LetterTypeEnum.CONSONANTS) {
@@ -31,7 +39,11 @@ public class TextAnalyzer {
                     letterCount.put(String.valueOf(c), letterCount.getOrDefault(String.valueOf(c), 0) + 1);
             }
         }
-        return letterCount;
+        AnalyzeText200Response response = new AnalyzeText200Response();
+        response.setCharacterCount(letterCount);
+        response.setNonAttributableCharacters(nonAttributableCharacters);
+        LOGGER.log(Level.INFO, response);
+        return response;
     }
 
     private static String customToUpperCase(String input) {

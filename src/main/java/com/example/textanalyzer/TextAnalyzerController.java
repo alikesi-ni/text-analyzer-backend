@@ -1,5 +1,6 @@
 package com.example.textanalyzer;
 
+import com.example.model.AnalyzeText200Response;
 import com.example.model.AnalyzeTextRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class TextAnalyzerController {
 
     @PostMapping("/analyze")
-    public Map<String, Integer> analyzeText(@RequestBody AnalyzeTextRequest request) {
+    public AnalyzeText200Response analyzeText(@RequestBody AnalyzeTextRequest request) {
         return TextAnalyzer.analyze(request);
     }
 }
