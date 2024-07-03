@@ -7,17 +7,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-
 import java.util.*;
 
 @Service
 public class TextAnalyzerService {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
     private static final String UPPER_CASE_VOWELS = "AEIOU";
     private static final String UPPER_CASE_CONSONANTS = "BCDFGHJKLMNPQRSTVWXYZ";
-
     private static final String ATTRIBUTABLE_CHARACTERS =
             UPPER_CASE_CONSONANTS + UPPER_CASE_CONSONANTS.toLowerCase()
             + UPPER_CASE_VOWELS + UPPER_CASE_VOWELS.toLowerCase();

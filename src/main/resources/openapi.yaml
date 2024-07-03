@@ -53,3 +53,5 @@ paths:
                       maxLength: 1
                     description: List of non-attributable characters
                     example: [ "!", "@", "#" ]
+                required:
+                  - characterCount

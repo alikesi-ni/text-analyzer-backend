@@ -1,13 +1,9 @@
 package com.example.textanalyzer;
 
-import java.util.Map;
-
 import com.example.model.AnalyzeText200Response;
 import com.example.model.AnalyzeTextRequest;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -30,7 +26,7 @@ class TextAnalyzerServiceTests {
     @Test
     void testSameUpperCaseAndLowerCaseVowel() {
         String input = "Information";
-        AnalyzeTextRequest.LetterTypeEnum letterType = AnalyzeTextRequest.LetterTypeEnum.CONSONANTS;
+        AnalyzeTextRequest.LetterTypeEnum letterType = AnalyzeTextRequest.LetterTypeEnum.VOWELS;
         AnalyzeTextRequest request = new AnalyzeTextRequest();
         request.setInput(input);
         request.setLetterType(letterType);
